@@ -106,7 +106,7 @@ Copy your content on your host machine to this folder.
 
 ### Add provisioning steps fro the VM
 
-Open Vagrantfile and edit/uncomment the last block of lines to look like this:
+We will include the copying of our web content to apache's default folder making sure our content loads when we ask the web server. Open Vagrantfile and edit/uncomment the last block of lines to look like this:
 
 ```
   # Enable provisioning with a shell script. Additional provisioners such as
@@ -115,8 +115,22 @@ Open Vagrantfile and edit/uncomment the last block of lines to look like this:
   config.vm.provision "shell", inline: <<-SHELL
      apt-get update
      apt-get install -y apache2
+     cp -r /vagrant/webcontent/* /var/www/html/
    SHELL
 end
 ```
+Check if Vagrantfile is looking good
 
+```
+vagrant validate
+```
+Should come back with something like: Vagrantfile validated successfully.
 
+Run vagrant destroy to delete the existing virtual machine.
+```
+vagrant destroy
+```
+Now finally bring up the machine with the automatic provisioning code:
+```
+vagrant up
+```
