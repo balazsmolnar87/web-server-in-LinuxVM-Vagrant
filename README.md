@@ -1,5 +1,71 @@
-# web-server-in-LinuxVM-Vagrant
+## This project is to practice DevOps skills.
 
-This project is to practice DevOps skills.
+### I was following this tutorial: Run a web server in a Linux VM with Vagrant [Learning Project] 
+### www.tutorialworks.com/linux-vm-vagrant/
+Made by Tom Donohue
 
-Run a web server in a Linux VM with Vagrant [Learning Project] from www.tutorialworks.com/linux-vm-vagrant/
+---
+
+We are going to use Vagrant and Virtualbox to deploy an Apache web server on an Ubuntu distribution inside our VM.
+
+### Install softwares if needed
+
+Install VirtaulBox www.virtualbox.org
+
+Install Vagrant www.vagrantup.com
+
+## Create a virtual machine
+
+### Create and start an Ubuntu Linux VM with Vagrant
+
+In a terminal create a folder for your project. Inside your project folder type:
+
+vagrant init ubuntu/jammy64
+  
+vagrant up
+  
+Vagrant will download the Ubuntu 22.04 box, it might take some time. When it finishes you may have a look inside the virtual machine, type:
+
+vagrant ssh
+
+Type exit to exit the virtual machine.
+
+## Install the web server
+
+### Install Apache in the Ubuntu VM
+
+Inside the VM type:
+
+sudo apt update
+
+sudo apt install apache2
+
+You may run:
+
+systemctl status apache2
+
+to confirm the apache daemon is installed and running. Type:
+
+curl -v localhost:80
+
+and you should get back a HTML response.
+
+In order to reach our VM from our host machine's web browser I chose to forward a port, but you may use other methods as well.
+
+Open the Vagrantfile inside your project folder. Search for lines describing port forwarding and uncomment out the lines, or insert:
+
+config.vm.network "forwarded_port", guest: 80, host: 8080
+
+Run:
+
+vagrant reload
+
+command to reload the Vm with the changes.
+
+With this we will be ablo to reach the apache web server wich is default listening on port 80 on port 8080 on our host machine's web browser. Now save the Vagrantfile. You might get an error saying the port 8080 is already being used by an other program on your machine. You may want to end that service or alloce some other port in the Vagrantfile.
+
+## Test the setup
+
+### Access the website from a web browser
+
+Open a browser and type 'localhost' inside the address bar and press enter. You should be able to see apache2's default page.
